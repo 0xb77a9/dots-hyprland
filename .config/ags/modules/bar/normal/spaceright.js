@@ -79,16 +79,20 @@ export default (monitor = 0) => {
             if (!Audio.speaker) return;
             let _;
             [_, scrollCursorX, scrollCursorY] = event.get_coords();
-            if (Audio.speaker.volume <= 0.09) Audio.speaker.volume += 0.01;
-            else Audio.speaker.volume += 0.03;
+            let newVolume = Math.round(Audio.speaker.volume * 100);
+            if (newVolume % 2 !== 0) newVolume += 1;
+            else newVolume += 2;
+            Audio.speaker.volume = Math.max(newVolume, 0) / 100;
             Indicator.popup(1);
         },
         onScrollDown: (self, event) => {
             if (!Audio.speaker) return;
             let _;
             [_, scrollCursorX, scrollCursorY] = event.get_coords();
-            if (Audio.speaker.volume <= 0.09) Audio.speaker.volume -= 0.01;
-            else Audio.speaker.volume -= 0.03;
+            let newVolume = Math.round(Audio.speaker.volume * 100);
+            if (newVolume % 2 !== 0) newVolume -= 1;
+            else newVolume -= 2;
+            Audio.speaker.volume = Math.max(newVolume, 0) / 100;
             Indicator.popup(1);
         },
         setup: (self) => self.on('motion-notify-event', (self, event) => {
